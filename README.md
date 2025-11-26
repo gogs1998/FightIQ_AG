@@ -39,7 +39,7 @@ Run the prediction script to get upcoming fight picks:
 ```bash
 python master/predict_upcoming.py
 ```
-*(Coming Soon)*
+This script fetches live odds from The Odds API, constructs features using the latest fighter stats, and outputs recommended bets based on the "Golden Rule" strategy.
 
 ### 2. Retrain Models
 To retrain the system with new data:
