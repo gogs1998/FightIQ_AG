@@ -1,0 +1,89 @@
+This is seriously clean now. 🌶️ You’ve basically got “camera-ready” level prose. I’ll just flag a *few* ultra-minor polish items you might want to tweak, plus give exact drop-in edits.
+
+---
+
+## 1. Tiny consistency tweaks
+
+### 1.1 Conclusion: specify flat-bet ROI
+
+In the Conclusion you say:
+
+> “Empirically, FightIQ delivers a 23.47% flat-bet ROI in 2024 and a mean 16.31% ROI in 2025…”
+
+I’d keep the “flat-bet” qualifier here too, so it aligns with the Abstract and §5.2.
+
+**Edit:**
+
+> “Empirically, FightIQ delivers a 23.47% **flat-bet** ROI in 2024 and a mean **flat-bet** ROI of 16.31% in 2025, with substantial compounded growth under a conservative one-eighth Kelly strategy.”
+
+---
+
+### 1.2 Optional: match “flat-bet” hyphenation everywhere
+
+You use “flat-bet ROI” in some places and “Flat Betting ROI” in others.
+
+Up to you, but if you want perfect consistency you could standardise on **“flat-bet ROI”** everywhere:
+
+* 5.1 bullet:
+
+  ```markdown
+  - **Flat-bet ROI:** **23.47%** (Outstanding).
+  ```
+
+* 5.2 bullet:
+
+  ```markdown
+  - **Flat-bet ROI:** **8.27%**.
+  ```
+
+That’s purely style; what you have is still perfectly clear.
+
+---
+
+## 2. Optional micro-edits
+
+These are nit-level and totally optional:
+
+### 2.1 Capitalisation / wording in 2.2.2
+
+You have:
+
+> `diff_strike_landed_per_min` = (Fighter A Strikes) - (Fighter B Strikes)
+
+If you want it more “mathy” and less “Englishy”:
+
+```markdown
+- `diff_strike_landed_per_min` = (Fighter A strikes landed per minute) − (Fighter B strikes landed per minute)
+```
+
+Same information, just slightly more precise.
+
+---
+
+### 2.2 Brier-score sentence (5.3)
+
+Currently:
+
+> “…reduced Brier score by approximately **10–15%** relative to market implied probabilities, confirming that the edge arises from superior probability estimation.”
+
+If you *do* also see a nice gap vs your Elo baseline, you could sneak that back in:
+
+```markdown
+Across 2024–2025, FightIQ reduced Brier score by approximately **10–15%** relative to market implied probabilities and by **≈20%** relative to a pure Elo baseline, confirming that the edge arises from superior probability estimation rather than staking aggressiveness alone.
+```
+
+(Adjust the ≈20% to whatever your actual number is; if you don’t have it / don’t like it, your current sentence is fine.)
+
+---
+
+## 3. Sanity check: everything else
+
+* Kelly naming is now consistent: “one-eighth Kelly” everywhere ✅
+* “no shuffling” and time-series CV are explicit ✅
+* Leakage example + “features only from fights strictly before (t)” is very clear ✅
+* Clear separation between flat-bet ROI and Kelly growth, with definitions ✅
+* Tone is assertive but not over-claimy ✅
+
+From here, you’re honestly in “formatting” territory: LaTeX, arXiv template, or whatever wrapper you want around this core text.
+
+If you tell me your target format (e.g. *“NeurIPS-style LaTeX”*, *“technical blog post with figures”*, or *“investor deck bullets”*), I can turn this exact version into that shape in one shot.

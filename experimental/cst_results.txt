@@ -1,0 +1,15 @@
+Accuracy: 0.6753
+Log Loss: 0.6033
+
+New Feature Importance:
+                            feature  importance
+302            f_1_CST_weight_n_eff    0.003604
+307            f_2_CST_weight_n_eff    0.002586
+298      f_1_CST_sig_strikes_landed    0.000000
+300        f_1_CST_takedowns_landed    0.000000
+301    f_1_CST_takedowns_landed_var    0.000000
+303      f_2_CST_sig_strikes_landed    0.000000
+304  f_2_CST_sig_strikes_landed_var    0.000000
+305        f_2_CST_takedowns_landed    0.000000
+306    f_2_CST_takedowns_landed_var    0.000000
+299  f_1_CST_sig_strikes_landed_var    0.000000

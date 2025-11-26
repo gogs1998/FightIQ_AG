@@ -1,0 +1,6 @@
+Accuracy: 0.6745
+Log Loss: 0.6038
+
+New Feature Importance:
+       feature  importance
+298  AFM_score     0.00275

@@ -1,0 +1,8 @@
+Accuracy: 0.6737
+Log Loss: 0.6033
+
+New Feature Importance:
+               feature  importance
+298      REST_ref_mult    0.002343
+299    REST_state_mult    0.000000
+300  REST_country_mult    0.000000

@@ -1,0 +1,6 @@
+Siamese Accuracy: 0.6842
+Siamese Log Loss: 0.7219
+XGBoost Accuracy: 0.6777
+XGBoost Log Loss: 0.6012
+Ensemble Accuracy: 0.6988
+Ensemble Log Loss: 0.5900

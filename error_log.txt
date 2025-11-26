@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "D:\AntiGravity\FightIQ\v2\pipeline_analyst.py", line 36, in <module>
+    run_analyst_pipeline()
+  File "D:\AntiGravity\FightIQ\v2\pipeline_analyst.py", line 23, in run_analyst_pipeline
+    model = AnalystEnsemble()
+            ^^^^^^^^^^^^^^^^^
+  File "D:\AntiGravity\FightIQ\v2\models\analyst_ensemble.py", line 29, in __init__
+    self.conformal = ConformalClassifier(alpha=0.1) # 90% Confidence
+                     ^^^^^^^^^^^^^^^^^^^
+NameError: name 'ConformalClassifier' is not defined

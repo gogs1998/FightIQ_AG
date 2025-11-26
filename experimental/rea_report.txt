@@ -1,0 +1,17 @@
+REA Report
+Accuracy: 68.2591%
+Errors: 392
+
+Top Correlations (Easier):
+f_2_r5_ground_acc           0.595188
+f_1_r4_ground_acc           0.323625
+f_2_r4_leg_acc              0.313358
+f_1_submission_att_total    0.272843
+target                      0.230010
+
+Top Correlations (Harder):
+ctrl_ratio_r3_15_f_2   NaN
+ctrl_ratio_r4_15_f_1   NaN
+ctrl_ratio_r4_15_f_2   NaN
+ctrl_ratio_r5_15_f_1   NaN
+ctrl_ratio_r5_15_f_2   NaN

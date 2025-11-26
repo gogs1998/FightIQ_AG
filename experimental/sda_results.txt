@@ -1,0 +1,17 @@
+Accuracy: 0.6761
+Log Loss: 0.6000
+
+New Feature Importance:
+                     feature  importance
+304      f_2_sda_pos_entropy    0.003945
+306  diff_sda_target_entropy    0.003532
+302   f_2_sda_target_entropy    0.003293
+299        f_1_sda_target_js    0.002785
+298   f_1_sda_target_entropy    0.002721
+308     diff_sda_pos_entropy    0.002671
+300      f_1_sda_pos_entropy    0.002549
+301           f_1_sda_pos_js    0.002172
+307       diff_sda_target_js    0.001808
+303        f_2_sda_target_js    0.000000
+305           f_2_sda_pos_js    0.000000
+309          diff_sda_pos_js    0.000000

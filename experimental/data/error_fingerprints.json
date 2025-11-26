@@ -1,0 +1,794 @@
+[
+    [
+        "f_2_r4_ground_acc",
+        {
+            "mean_error": 1.0,
+            "mean_correct": 0.609140341162985,
+            "z_score": 1.182313777807669,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_ground_acc",
+        {
+            "mean_error": 0.6163194444444444,
+            "mean_correct": 0.811009361009361,
+            "z_score": -0.7480961098835214,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_r4_ground_acc",
+        {
+            "mean_error": 0.5833333333333334,
+            "mean_correct": 0.8073143961301855,
+            "z_score": -0.6214687265405557,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_submission_att_total",
+        {
+            "mean_error": 0.043478260869565216,
+            "mean_correct": 0.47368421052631576,
+            "z_score": -0.5396822063716834,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r5_distance_att",
+        {
+            "mean_error": 49.69565217391305,
+            "mean_correct": 34.94736842105263,
+            "z_score": 0.512075885967045,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_distance_share",
+        {
+            "mean_error": 0.9224583439832467,
+            "mean_correct": 0.8013146363429355,
+            "z_score": 0.5096072786701273,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_head_att",
+        {
+            "mean_error": 43.47826086956522,
+            "mean_correct": 30.964912280701753,
+            "z_score": 0.4894921736265743,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r4_clinch_succ",
+        {
+            "mean_error": 2.0,
+            "mean_correct": 1.0,
+            "z_score": 0.4709887877268168,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_sig_strikes_att",
+        {
+            "mean_error": 52.608695652173914,
+            "mean_correct": 39.01754385964912,
+            "z_score": 0.4691317947330377,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_sig_pct_att",
+        {
+            "mean_error": 52.608695652173914,
+            "mean_correct": 39.01754385964912,
+            "z_score": 0.4691317947330377,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r4_clinch_share",
+        {
+            "mean_error": 0.10904933597027376,
+            "mean_correct": 0.049061275837374324,
+            "z_score": 0.46467410073255583,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_body_acc",
+        {
+            "mean_error": 0.8088015307132953,
+            "mean_correct": 0.6666612503334156,
+            "z_score": 0.4611172141326187,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r4_leg_acc",
+        {
+            "mean_error": 0.7637820512820512,
+            "mean_correct": 0.8750405043674274,
+            "z_score": -0.4543399719178332,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_td_1_acc",
+        {
+            "mean_error": 0.505249894723579,
+            "mean_correct": 0.37557386837789447,
+            "z_score": 0.42245102261830325,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_ground_share",
+        {
+            "mean_error": 0.0302915851007646,
+            "mean_correct": 0.08964775539247785,
+            "z_score": -0.3986648491492668,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r5_distance_succ",
+        {
+            "mean_error": 21.52173913043478,
+            "mean_correct": 16.19298245614035,
+            "z_score": 0.3939545867209876,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r4_clinch_att",
+        {
+            "mean_error": 2.576923076923077,
+            "mean_correct": 1.537313432835821,
+            "z_score": 0.3907430314274998,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_td_1_att",
+        {
+            "mean_error": 0.8695652173913043,
+            "mean_correct": 1.6842105263157894,
+            "z_score": -0.3893763880487228,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r5_ground_share",
+        {
+            "mean_error": 0.03211789993918878,
+            "mean_correct": 0.11785186044114615,
+            "z_score": -0.38805469280558624,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r5_total_strikes_att",
+        {
+            "mean_error": 60.56521739130435,
+            "mean_correct": 50.01754385964912,
+            "z_score": 0.3640341046008387,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r5_head_att",
+        {
+            "mean_error": 40.78260869565217,
+            "mean_correct": 32.75438596491228,
+            "z_score": 0.3422982264694645,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r5_leg_acc",
+        {
+            "mean_error": 0.9093749999999999,
+            "mean_correct": 0.8300125313283209,
+            "z_score": 0.34060448705161406,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_ground_att_total",
+        {
+            "mean_error": 4.3478260869565215,
+            "mean_correct": 8.75438596491228,
+            "z_score": -0.3319899985421856,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_ground_succ_total",
+        {
+            "mean_error": 3.260869565217391,
+            "mean_correct": 6.473684210526316,
+            "z_score": -0.33062495057149244,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r5_clinch_share",
+        {
+            "mean_error": 0.0454237560775645,
+            "mean_correct": 0.0808335032159182,
+            "z_score": -0.32043048476900715,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r4_ground_share",
+        {
+            "mean_error": 0.015076190476190472,
+            "mean_correct": 0.06868164730006834,
+            "z_score": -0.32026365410659474,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_body_acc",
+        {
+            "mean_error": 0.7416191093183376,
+            "mean_correct": 0.6922898509108533,
+            "z_score": 0.3191385878841844,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_ctrl",
+        {
+            "mean_error": 35.391304347826086,
+            "mean_correct": 55.03508771929825,
+            "z_score": -0.3142204918937891,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_body_succ_total",
+        {
+            "mean_error": 17.73913043478261,
+            "mean_correct": 22.087719298245613,
+            "z_score": -0.30191671528625563,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r4_td_2",
+        {
+            "mean_error": 24.03846153846154,
+            "mean_correct": 14.029850746268657,
+            "z_score": 0.29861956462393885,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r5_ground_acc",
+        {
+            "mean_error": 0.806060606060606,
+            "mean_correct": 0.7128915090757196,
+            "z_score": 0.2908002712251452,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_leg_acc",
+        {
+            "mean_error": 0.7852447487956716,
+            "mean_correct": 0.8349513578765887,
+            "z_score": -0.2904554339320808,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_r5_sig_strikes_att",
+        {
+            "mean_error": 48.869565217391305,
+            "mean_correct": 41.0,
+            "z_score": 0.28964919725915883,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r5_sig_pct_att",
+        {
+            "mean_error": 48.869565217391305,
+            "mean_correct": 41.0,
+            "z_score": 0.28964919725915883,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_body_att_total",
+        {
+            "mean_error": 24.869565217391305,
+            "mean_correct": 30.75438596491228,
+            "z_score": -0.2893085901146134,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_r5_distance_att",
+        {
+            "mean_error": 44.30434782608695,
+            "mean_correct": 36.12280701754386,
+            "z_score": 0.28804691543541144,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_distance_share",
+        {
+            "mean_error": 0.8814029248902209,
+            "mean_correct": 0.8317488850739432,
+            "z_score": 0.2872385764468231,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_td_1_acc",
+        {
+            "mean_error": 0.38605994159627377,
+            "mean_correct": 0.3017697849480563,
+            "z_score": 0.28327405931004696,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_distance_att_total",
+        {
+            "mean_error": 206.34782608695653,
+            "mean_correct": 178.859649122807,
+            "z_score": 0.28070025070331944,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r5_clinch_acc",
+        {
+            "mean_error": 0.6251984126984127,
+            "mean_correct": 0.7258064516129032,
+            "z_score": -0.28040744322677913,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r4_ground_att",
+        {
+            "mean_error": 0.34615384615384615,
+            "mean_correct": 1.9104477611940298,
+            "z_score": -0.27351930516236295,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_ground_acc",
+        {
+            "mean_error": 0.6968288247700012,
+            "mean_correct": 0.7626141185104693,
+            "z_score": -0.27339544356893014,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r5_sig_strikes_succ",
+        {
+            "mean_error": 23.608695652173914,
+            "mean_correct": 19.649122807017545,
+            "z_score": 0.27337339137202776,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_sig_pct_succ",
+        {
+            "mean_error": 23.608695652173914,
+            "mean_correct": 19.649122807017545,
+            "z_score": 0.27337339137202776,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r4_body_acc",
+        {
+            "mean_error": 0.750979353979354,
+            "mean_correct": 0.8099067371608355,
+            "z_score": -0.2675008420808053,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_odds",
+        {
+            "mean_error": 2.272531515825497,
+            "mean_correct": 2.660371342048012,
+            "z_score": -0.2633666251015314,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_head_att_total",
+        {
+            "mean_error": 172.8695652173913,
+            "mean_correct": 149.82456140350877,
+            "z_score": 0.2612230300530788,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r5_head_succ",
+        {
+            "mean_error": 16.347826086956523,
+            "mean_correct": 13.403508771929825,
+            "z_score": 0.26059147696253365,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r3_ground_acc",
+        {
+            "mean_error": 0.6698425425161523,
+            "mean_correct": 0.7495642782176809,
+            "z_score": -0.25523606028935153,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r4_body_share",
+        {
+            "mean_error": 0.24669857259793512,
+            "mean_correct": 0.201050740003528,
+            "z_score": 0.254196064768179,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_sig_pct_att_total",
+        {
+            "mean_error": 221.08695652173913,
+            "mean_correct": 196.26315789473685,
+            "z_score": 0.2525881160396823,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_sig_strikes_att_total",
+        {
+            "mean_error": 221.08695652173913,
+            "mean_correct": 196.26315789473685,
+            "z_score": 0.2525881160396823,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r4_leg_att",
+        {
+            "mean_error": 3.923076923076923,
+            "mean_correct": 3.0,
+            "z_score": 0.24846375408024954,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "ctrl_ratio_3_f_1",
+        {
+            "mean_error": 8.820427490736167,
+            "mean_correct": 11.538304366495659,
+            "z_score": -0.24803980107503706,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_distance_acc",
+        {
+            "mean_error": 0.4399207481403916,
+            "mean_correct": 0.46715371646525755,
+            "z_score": -0.24557570785599314,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r4_ground_succ",
+        {
+            "mean_error": 0.34615384615384615,
+            "mean_correct": 1.3134328358208955,
+            "z_score": -0.2431591634865115,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_r1_ground_acc",
+        {
+            "mean_error": 0.6443453822637573,
+            "mean_correct": 0.71851018347471,
+            "z_score": -0.2430759630773167,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_td_1_att_total",
+        {
+            "mean_error": 4.391304347826087,
+            "mean_correct": 6.12280701754386,
+            "z_score": -0.24144969529144794,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "physical_strength_3_f_1",
+        {
+            "mean_error": 2.0690918590094802,
+            "mean_correct": 2.583733027211635,
+            "z_score": -0.2370991577736057,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_r5_total_strikes_att",
+        {
+            "mean_error": 60.869565217391305,
+            "mean_correct": 54.19298245614035,
+            "z_score": 0.2335388607554001,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "diff_odds",
+        {
+            "mean_error": -0.07154452856787388,
+            "mean_correct": -0.5959527090342052,
+            "z_score": 0.23337949015071371,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r2_total_strikes_succ",
+        {
+            "mean_error": 24.472049689440993,
+            "mean_correct": 28.232508073196986,
+            "z_score": -0.23049730637589438,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_sig_pct_acc",
+        {
+            "mean_error": 0.47235224612992016,
+            "mean_correct": 0.4998872618606553,
+            "z_score": -0.22961929509467785,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_sig_strikes_acc",
+        {
+            "mean_error": 0.47235224612992016,
+            "mean_correct": 0.4998872618606553,
+            "z_score": -0.22961929509467785,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_r5_td_1_att",
+        {
+            "mean_error": 1.1304347826086956,
+            "mean_correct": 1.631578947368421,
+            "z_score": -0.22730954886690236,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_fighter_Str_Acc",
+        {
+            "mean_error": 0.46417266187050366,
+            "mean_correct": 0.48174796747967474,
+            "z_score": -0.22685858971554174,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r3_distance_succ",
+        {
+            "mean_error": 18.224899598393574,
+            "mean_correct": 15.21625344352617,
+            "z_score": 0.22295610132883123,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r4_leg_succ",
+        {
+            "mean_error": 3.269230769230769,
+            "mean_correct": 2.5671641791044775,
+            "z_score": 0.22095921699153012,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r4_body_acc",
+        {
+            "mean_error": 0.7750082671957671,
+            "mean_correct": 0.720110997455495,
+            "z_score": 0.22051770122882194,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "diff_physical_strength_3",
+        {
+            "mean_error": -0.40395514423224493,
+            "mean_correct": 0.2450708351688374,
+            "z_score": -0.21999401611540786,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_head_acc",
+        {
+            "mean_error": 0.38644700133034465,
+            "mean_correct": 0.41620066158176644,
+            "z_score": -0.21896165979140797,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_r2_ctrl",
+        {
+            "mean_error": 44.47204968944099,
+            "mean_correct": 60.843918191603876,
+            "z_score": -0.21679633398922474,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "diff_ctrl_ratio_3",
+        {
+            "mean_error": -1.9442081967154192,
+            "mean_correct": 1.1969103957228848,
+            "z_score": -0.21506109613052868,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r3_total_strikes_att",
+        {
+            "mean_error": 56.28915662650602,
+            "mean_correct": 50.05785123966942,
+            "z_score": 0.21265718117203838,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_1_r5_clinch_share",
+        {
+            "mean_error": 0.04432408904944167,
+            "mean_correct": 0.06488549090619282,
+            "z_score": -0.21248881110431364,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_clinch_share",
+        {
+            "mean_error": 0.07255018614312446,
+            "mean_correct": 0.05849493873204947,
+            "z_score": 0.2099431517717257,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "physical_strength_4_f_1",
+        {
+            "mean_error": 2.1563462408041754,
+            "mean_correct": 2.5952626348109793,
+            "z_score": -0.20938858593629006,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r2_sig_strikes_succ",
+        {
+            "mean_error": 20.60248447204969,
+            "mean_correct": 17.81162540365985,
+            "z_score": 0.20886217793523948,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r2_sig_pct_succ",
+        {
+            "mean_error": 20.60248447204969,
+            "mean_correct": 17.81162540365985,
+            "z_score": 0.20886217793523948,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "ctrl_ratio_4_f_1",
+        {
+            "mean_error": 9.32442846735555,
+            "mean_correct": 11.530478936091438,
+            "z_score": -0.20858748945549252,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_1_leg_acc",
+        {
+            "mean_error": 0.8467039313122701,
+            "mean_correct": 0.8092860225303881,
+            "z_score": 0.20813781943545584,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "diff_timing_3",
+        {
+            "mean_error": -0.008394494631311662,
+            "mean_correct": 0.02860595013193912,
+            "z_score": -0.2078411837835673,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r5_body_succ",
+        {
+            "mean_error": 5.304347826086956,
+            "mean_correct": 4.175438596491228,
+            "z_score": 0.20698488776642532,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "f_2_r3_head_succ",
+        {
+            "mean_error": 14.345381526104418,
+            "mean_correct": 12.107438016528926,
+            "z_score": 0.20260662276992375,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "ctrl_ratio_5_f_1",
+        {
+            "mean_error": 9.494457254340803,
+            "mean_correct": 11.575871176100526,
+            "z_score": -0.20073691651030315,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r3_total_strikes_succ",
+        {
+            "mean_error": 29.76706827309237,
+            "mean_correct": 26.15426997245179,
+            "z_score": 0.20060957590540646,
+            "interpretation": "Higher in Errors"
+        }
+    ],
+    [
+        "diff_str_acc_3",
+        {
+            "mean_error": -0.007493588599384838,
+            "mean_correct": 0.03841035808672756,
+            "z_score": -0.2001226660753361,
+            "interpretation": "Lower in Errors"
+        }
+    ],
+    [
+        "f_2_r5_distance_acc",
+        {
+            "mean_error": 0.48022802598711484,
+            "mean_correct": 0.4435953971708456,
+            "z_score": 0.20003000074601515,
+            "interpretation": "Higher in Errors"
+        }
+    ]
+]
