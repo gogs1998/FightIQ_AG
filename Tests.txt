@@ -1,0 +1,7 @@
+tests/ layer: Pytest suite split by domain (e.g., tests/metrics, tests/ingest, tests/qa) covering unit semantics, regression fixtures, and DuckDB-backed integration cases; run with poetry run pytest.
+Golden-data harness: scripts/derive_golden_refs.py locks key RPC responses and parquet slices; CI compares current outputs to golden snapshots so any drift forces review.
+QA gate: src/metrics/qa.py::run_qa_checks runs after every metrics refresh, enforcing NaN sweeps, monotonic timestamps, bounded drawdowns, and configurable outlier thresholds from config/metrics.yaml.
+Ingest smoke tests: tests/ingest paired with config/ingest.yaml to replay curated block ranges through the full pipeline, asserting DuckDB schemas, partition counts, and idempotent load semantics.
+End-to-end rehearsal: poetry run onchain ingest catchup followed by poetry run onchain metrics build && poetry run onchain qa run mirrors production; failures halt deploys and trigger log capture.
+Operational telemetry: check_actual_progress.py and friends read the live bitcoind RPC/disk snapshots to ensure data freshness, and they’re hooked into scheduled monitors alongside docker health probes.
+You can mirror this for the fight predictor by mapping: deterministic fixtures ↔ historical scorecards, QA gate ↔ feature sanity (missing odds, weight cuts), ingest smoke ↔ event replay, and end-to-end rehearsal ↔ model training + inference dry run.

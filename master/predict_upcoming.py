@@ -11,7 +11,7 @@ from models import SiameseMatchupNet, prepare_siamese_data
 # API Config
 API_KEY = '74b4ca301791b4b4c6ebe95897ac8673'
 SPORT = 'mma_mixed_martial_arts'
-REGIONS = 'us'
+REGIONS = 'uk' # Changed to UK
 MARKETS = 'h2h'
 ODDS_FORMAT = 'decimal'
 
@@ -96,22 +96,22 @@ def construct_features(f1_name, f2_name, f1_odds, f2_odds, db, feature_names):
     return pd.DataFrame([row])
 
 def predict_upcoming():
-    print("=== FightIQ: Upcoming Fight Predictor ===")
+    print("=== FightIQ: Upcoming Fight Predictor (UK Region) ===")
     
     # 1. Load Resources
     print("Loading models and database...")
     try:
-        xgb_model = joblib.load('models/xgb_optimized.pkl')
-        iso_xgb = joblib.load('models/iso_xgb.pkl')
-        iso_siam = joblib.load('models/iso_siam.pkl')
-        scaler = joblib.load('models/siamese_scaler.pkl')
+        xgb_model = joblib.load('models/xgb_production.pkl')
+        iso_xgb = joblib.load('models/iso_xgb_production.pkl')
+        iso_siam = joblib.load('models/iso_siam_production.pkl')
+        scaler = joblib.load('models/siamese_scaler_production.pkl')
         
         with open('features.json', 'r') as f: features = json.load(f)
         with open('fighter_db_production.json', 'r') as f: fighter_db = json.load(f)
         with open('models/siamese_cols.json', 'r') as f: siamese_cols = json.load(f)
         
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        state_dict = torch.load('models/siamese_optimized.pth', map_location=device)
+        state_dict = torch.load('models/siamese_production.pth', map_location=device)
         input_dim = state_dict['encoder.0.weight'].shape[1]
         siamese_model = SiameseMatchupNet(input_dim, hidden_dim=64).to(device)
         siamese_model.load_state_dict(state_dict)
@@ -133,12 +133,20 @@ def predict_upcoming():
     
     bets_to_make = []
     
+    # UK Bookmakers to check
+    uk_bookies = ['williamhill', 'bet365', 'unibet', 'betfair', 'paddypower', 'skybet', 'ladbrokes', 'coral', 'betway', '888sport']
+    
     for event in events:
         event_name = event.get('commence_time', 'Unknown Date')
-        print(f"\n--- Event: {event_name} ---")
+        print(f"\n========================================================")
+        print(f"EVENT: {event_name}")
+        print(f"========================================================")
+        print(f"{'Matchup':<40} | {'Pred':<8} | {'Conf':<6} | {'Odds':<6} | {'Edge':<6} | {'Action':<15}")
+        print("-" * 95)
         
+        # Find best available odds across UK bookies
         for bookmaker in event['bookmakers']:
-            if bookmaker['key'] in ['draftkings', 'fanduel', 'bovada']: # Preferred books
+            if bookmaker['key'] in uk_bookies: 
                 # Process markets
                 for market in bookmaker['markets']:
                     if market['key'] == 'h2h':
@@ -155,7 +163,7 @@ def predict_upcoming():
                         f2_db = find_fighter_in_db(f2_api_name, db_names)
                         
                         if not f1_db or not f2_db:
-                            print(f"Skipping {f1_api_name} vs {f2_api_name} (Fighter not found in DB)")
+                            print(f"{f1_api_name} vs {f2_api_name:<30} | {'N/A':<8} | {'N/A':<6} | {'N/A':<6} | {'N/A':<6} | {'SKIP (No Data)':<15}")
                             continue
                             
                         # Construct Features
@@ -164,47 +172,34 @@ def predict_upcoming():
                         
                         # Predict
                         # 1. XGB Raw
-                        # Ensure X has columns in correct order for XGB
                         X_xgb = X[[c for c in features if c in X.columns]]
                         p_xgb_raw = xgb_model.predict_proba(X_xgb)[:, 1][0]
                         
-                        # 2. Siamese Raw (Manual Construction)
+                        # 2. Siamese Raw
                         f1_vec = []
                         f2_vec = []
-                        
                         for col in siamese_cols:
-                            # F1 Value
                             val1 = 0.0
-                            if col in X.columns:
-                                val1 = X[col].values[0]
+                            if col in X.columns: val1 = X[col].values[0]
                             f1_vec.append(val1)
                             
-                            # F2 Value (Swap)
                             col2 = None
-                            if col.startswith('f_1_'):
-                                col2 = col.replace('f_1_', 'f_2_')
-                            elif '_f_1' in col:
-                                col2 = col.replace('_f_1', '_f_2')
+                            if col.startswith('f_1_'): col2 = col.replace('f_1_', 'f_2_')
+                            elif '_f_1' in col: col2 = col.replace('_f_1', '_f_2')
                             
                             val2 = 0.0
-                            if col2 and col2 in X.columns:
-                                val2 = X[col2].values[0]
+                            if col2 and col2 in X.columns: val2 = X[col2].values[0]
                             f2_vec.append(val2)
                             
-                        f1_feat = np.array([f1_vec])
-                        f2_feat = np.array([f2_vec])
-                        
-                        f1_feat = scaler.transform(f1_feat)
-                        f2_feat = scaler.transform(f2_feat)
+                        f1_feat = scaler.transform(np.array([f1_vec]))
+                        f2_feat = scaler.transform(np.array([f2_vec]))
                         
                         t1 = torch.FloatTensor(f1_feat).to(device)
                         t2 = torch.FloatTensor(f2_feat).to(device)
                         with torch.no_grad():
                             p_siam_raw = siamese_model(t1, t2).cpu().numpy()
-                            if np.ndim(p_siam_raw) == 0:
-                                p_siam_raw = float(p_siam_raw)
-                            else:
-                                p_siam_raw = p_siam_raw[0]
+                            if np.ndim(p_siam_raw) == 0: p_siam_raw = float(p_siam_raw)
+                            else: p_siam_raw = p_siam_raw[0]
                             
                         # 3. Calibrate
                         p_xgb_iso = iso_xgb.predict([p_xgb_raw])[0]
@@ -214,7 +209,7 @@ def predict_upcoming():
                         w = 0.405
                         final_prob = w * p_xgb_iso + (1 - w) * p_siam_iso
                         
-                        # 5. Evaluate Bet
+                        # 5. Evaluate
                         if final_prob > 0.5:
                             my_prob = final_prob
                             odds = o1
@@ -226,20 +221,22 @@ def predict_upcoming():
                             fighter = f2_db
                             opponent = f1_db
                             
-                        # Golden Rule Filters
-                        # Min Conf 60%, Max Odds 5.0, Edge > 0
-                        
                         implied = 1.0 / odds
                         edge = my_prob - implied
                         
-                        print(f"{fighter} ({my_prob:.1%}) vs {opponent}: Odds {odds:.2f}, Edge {edge:.1%}")
+                        matchup_str = f"{fighter} vs {opponent}"
+                        action = "PASS"
                         
-                        if my_prob >= 0.60 and odds <= 5.0 and edge > 0:
+                        if my_prob < 0.60: action = "PASS (Low Conf)"
+                        elif odds > 5.0: action = "PASS (High Odds)"
+                        elif edge <= 0: action = "PASS (No Edge)"
+                        else:
                             # Kelly
                             b = odds - 1.0
                             q = 1.0 - my_prob
                             f_star = (b * my_prob - q) / b
                             stake_pct = f_star * 0.25
+                            action = f"BET {stake_pct:.1%}"
                             
                             bets_to_make.append({
                                 "Fighter": fighter,
@@ -250,11 +247,12 @@ def predict_upcoming():
                                 "Kelly_Stake": stake_pct,
                                 "Book": bookmaker['title']
                             })
-                            print(f"  >>> BET FOUND! Stake {stake_pct:.1%} of bankroll <<<")
+                        
+                        print(f"{matchup_str:<40} | {fighter:<8} | {my_prob:<6.1%} | {odds:<6.2f} | {edge:<6.1%} | {action:<15}")
                             
-                break # Only process one bookmaker per fight
+                break # Only process one bookmaker per fight (first UK one found)
                 
-    print("\n\n=== RECOMMENDED BETS ===")
+    print("\n\n=== SUMMARY OF RECOMMENDED UK BETS ===")
     if not bets_to_make:
         print("No bets found matching criteria.")
     else:
