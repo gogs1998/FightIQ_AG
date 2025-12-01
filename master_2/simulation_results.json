@@ -1,0 +1,72 @@
+[
+    {
+        "Kelly": 0.1,
+        "Final Bankroll": 2034695.3728199815,
+        "Profit": 2033695.3728199815,
+        "Max Drawdown": 0.28139197316848935,
+        "ROI (Yield)": 0.12036429342214039,
+        "Bets Placed": 609,
+        "Avg Stake": 27744.11890814175,
+        "Max Stake": 200000.0
+    },
+    {
+        "Kelly": 0.125,
+        "Final Bankroll": 3666021.9452514774,
+        "Profit": 3665021.9452514774,
+        "Max Drawdown": 0.24268583227498328,
+        "ROI (Yield)": 0.12315370919568093,
+        "Bets Placed": 609,
+        "Avg Stake": 48866.562538576734,
+        "Max Stake": 366812.2494562044
+    },
+    {
+        "Kelly": 0.25,
+        "Final Bankroll": 7525676.059859851,
+        "Profit": 7524676.059859851,
+        "Max Drawdown": 0.2917713140631031,
+        "ROI (Yield)": 0.13208289283685273,
+        "Bets Placed": 609,
+        "Avg Stake": 93545.72459985252,
+        "Max Stake": 833333.3333333326
+    },
+    {
+        "Kelly": 0.33,
+        "Final Bankroll": 8003881.676838226,
+        "Profit": 8002881.676838226,
+        "Max Drawdown": 0.37528551170770236,
+        "ROI (Yield)": 0.1321357388592915,
+        "Bets Placed": 609,
+        "Avg Stake": 99450.92016187918,
+        "Max Stake": 833333.3333333326
+    },
+    {
+        "Kelly": 0.5,
+        "Final Bankroll": 8462901.284945019,
+        "Profit": 8461901.284945019,
+        "Max Drawdown": 0.4730702911762902,
+        "ROI (Yield)": 0.13293862765111217,
+        "Bets Placed": 609,
+        "Avg Stake": 104520.01679145174,
+        "Max Stake": 973475.6682033078
+    },
+    {
+        "Kelly": 0.75,
+        "Final Bankroll": 8584286.938587759,
+        "Profit": 8583286.938587759,
+        "Max Drawdown": 0.469398029357028,
+        "ROI (Yield)": 0.13252780423790297,
+        "Bets Placed": 609,
+        "Avg Stake": 106348.00224517034,
+        "Max Stake": 997523.7693966804
+    },
+    {
+        "Kelly": 1.0,
+        "Final Bankroll": 8581352.293490928,
+        "Profit": 8580352.293490928,
+        "Max Drawdown": 0.46572576753776573,
+        "ROI (Yield)": 0.13193370072518087,
+        "Bets Placed": 609,
+        "Avg Stake": 106790.36782819871,
+        "Max Stake": 996942.3774435351
+    }
+]

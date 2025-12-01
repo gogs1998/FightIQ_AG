@@ -9,13 +9,24 @@ import uvicorn
 import os
 import sys
 
-# Add v2 to path
+# Add v2 and master_props to path
 sys.path.append(os.path.join(os.getcwd(), 'v2'))
-from models.analyst_ensemble import AnalystEnsemble
-from models.gambler_model import GamblerModel
-from api_support.matchup_engine import MatchupEngine
+sys.path.append(os.path.join(os.getcwd(), 'master_props'))
+sys.path.append(os.path.join(os.getcwd(), 'master_3'))
 
-app = FastAPI(title="FightIQ v2 API", description="UFC Prediction Engine (Analyst + Gambler)")
+from master_3.api_utils import Master3Predictor
+from master_props_2.api_utils import UnifiedPredictor
+
+m3_predictor = None
+unified_predictor = None
+
+# Master Props Resources
+prop_model_win = None
+prop_model_finish = None
+prop_model_method = None
+prop_model_round = None
+
+app = FastAPI(title="FightIQ API (Unified XGB)", version="3.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,14 +35,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Global Resources
-engine = None
-xgb_model = None
-siamese_model = None
-siamese_scaler = None
-siamese_cols = []
-xgb_weight = 0.5
 
 class FightRequest(BaseModel):
     f1_name: str
@@ -47,177 +50,195 @@ class PredictionResponse(BaseModel):
     is_value: bool
     bet_target: str
     edge: float
-    method_probs: dict = {} # Placeholder for future
-    conformal_set: list = [] # [0, 1] or [1] etc.
+    method_probs: dict = {} 
+    conformal_set: list = []
+    # Master Props Fields
+    pred_method: str = "N/A"
+    pred_round: str = "N/A"
+    trifecta_prob: float = 0.0
+    min_odds: str = "N/A"
 
 @app.on_event("startup")
 def load_resources():
-    global engine, xgb_model, siamese_model, siamese_scaler, siamese_cols, xgb_weight
-    print("Loading v2 resources...")
+    global m3_predictor
+    global prop_model_win, prop_model_finish, prop_model_method, prop_model_round
     
-    # 1. Matchup Engine
-    engine = MatchupEngine()
+    print("Loading resources...")
     
-    # Load Models
+    # 1. Master 3 Predictor
     try:
-        print("Loading optimized models...")
-        xgb_model = joblib.load('v2/models/xgb_optimized.pkl')
-        
-        # Load Siamese
-        device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        # Load scaler
-        siamese_scaler = joblib.load('v2/models/siamese_scaler.pkl')
-        
-        # Load Siamese columns
-        with open('v2/models/siamese_cols.json', 'r') as f:
-            siamese_cols = json.load(f)
-            
-        # Initialize Siamese Model (Hidden dim 64 from Optuna)
-        siamese_model = SiameseMatchupNet(len(siamese_cols), hidden_dim=64).to(device)
-        siamese_model.load_state_dict(torch.load('v2/models/siamese_optimized.pth'))
-        siamese_model.eval()
-        
-        # Load Metadata for weights
-        with open('v2/models/model_metadata.json', 'r') as f:
-            meta = json.load(f)
-            xgb_weight = meta['xgb_weight']
-            
-        print(f"Models loaded. Ensemble Weight: XGB={xgb_weight:.2f}, Siamese={1-xgb_weight:.2f}")
-        
+        m3_predictor = Master3Predictor()
+        print("Master 3 Predictor loaded.")
     except Exception as e:
-        print(f"Error loading models: {e}")
-        print("Falling back to legacy models...")
-        # Fallback logic or exit
-        xgb_model = None
-        siamese_model = None
+        print(f"Error loading Master 3: {e}")
+        import traceback
+        traceback.print_exc()
+
+    # 2. Load Master Props Models
+    try:
+        print("Loading Master Props models...")
+        prop_model_win = joblib.load('master_props/models/production_winner.pkl')
+        prop_model_finish = joblib.load('master_props/models/production_finish.pkl')
+        prop_model_method = joblib.load('master_props/models/production_method.pkl')
+        prop_model_round = joblib.load('master_props/models/production_round.pkl')
+        print("Master Props models loaded.")
+    except Exception as e:
+        print(f"Error loading Master Props models: {e}")
 
 @app.post("/predict", response_model=PredictionResponse)
 def predict(fight: FightRequest):
-    if not engine or not xgb_model:
-        raise HTTPException(status_code=503, detail="Models not loaded.")
+    if not m3_predictor:
+        raise HTTPException(status_code=503, detail="Master 3 Engine not loaded.")
         
     f1 = fight.f1_name
     f2 = fight.f2_name
     
-    # 1. Build Matchup Features
+    # --- Master 3 Prediction ---
     try:
-        X = engine.build_matchup(f1, f2, fight.f1_odds, fight.f2_odds)
+        p_f1, xgb_p, sia_p = m3_predictor.predict(f1, f2, fight.f1_odds, fight.f2_odds)
+        print(f"M3 Prediction: {f1}={p_f1:.1%} (XGB={xgb_p:.1%}, Sia={sia_p:.1%})")
     except Exception as e:
-        raise HTTPException(status_code=400, detail=f"Error building matchup: {e}")
-        
-    # 2. Generate Prediction
-    try:
-        # XGBoost Prediction
-        # Ensure X has correct columns for XGB
-        # The model expects specific columns. MatchupEngine returns a DataFrame with many cols.
-        # XGBoost handles extra columns if feature_names match? No, usually need to filter.
-        # But our trained model has feature_names_in_
-        
-        # Filter X to model features
-        model_feats = xgb_model.get_booster().feature_names
-        X_xgb = X[model_feats]
-        xgb_prob = float(xgb_model.predict_proba(X_xgb)[:, 1][0])
-        
-        # Siamese Prediction
-        siamese_prob = 0.5 # Default
-        if siamese_model:
-            # Prepare Siamese Data
-            # We need to extract the specific columns expected by Siamese
-            # We loaded siamese_cols in startup
-            # And we have siamese_scaler
-            
-            # Extract raw values
-            # X has 1 row
-            # We need to reconstruct f1_data and f2_data based on siamese_cols logic?
-            # Actually, siamese_cols is a list of (c1, c2) tuples? No, it's a list of f1_feats.
-            # Wait, prepare_siamese_data returns f1_feats.
-            # And we saved siamese_cols = f1_feats.
-            
-            # We need to find the corresponding f2_feats.
-            # The logic was:
-            # f1_col = feat
-            # f2_col = replace f1 with f2
-            
-            f1_data = []
-            f2_data = []
-            
-            for f1_col in siamese_cols:
-                # Reconstruct f2_col name
-                if f1_col.startswith('f_1_'):
-                    f2_col = f1_col.replace('f_1_', 'f_2_')
-                elif '_f_1' in f1_col:
-                    f2_col = f1_col.replace('_f_1', '_f_2')
-                else:
-                    # Should not happen given our logic, but fallback
-                    f2_col = f1_col 
-                
-                v1 = X[f1_col].values[0] if f1_col in X.columns else 0
-                v2 = X[f2_col].values[0] if f2_col in X.columns else 0
-                
-                f1_data.append(v1)
-                f2_data.append(v2)
-            
-            f1_arr = np.array([f1_data])
-            f2_arr = np.array([f2_data])
-            
-            # Scale
-            # We fit scaler on concatenated data.
-            f1_arr = siamese_scaler.transform(f1_arr)
-            f2_arr = siamese_scaler.transform(f2_arr)
-            
-            # Predict
-            t_f1 = torch.FloatTensor(f1_arr).to(device)
-            t_f2 = torch.FloatTensor(f2_arr).to(device)
-            siamese_prob = float(siamese_model(t_f1, t_f2).item())
-            
-        # Ensemble
-        # Load weight from metadata? We did in startup.
-        # Global xgb_weight
-        p_f1 = xgb_weight * xgb_prob + (1 - xgb_weight) * siamese_prob
-        p_f2 = 1.0 - p_f1
-        
-        # Conformal Set (Simplified for now)
-        c_set = []
-        if p_f1 > 0.2: c_set.append(f1)
-        if p_f2 > 0.2: c_set.append(f2)
-        
-    except Exception as e:
-        print(f"Prediction Error: {e}")
+        print(f"M3 Error: {e}")
         import traceback
         traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Model failed: {e}")
-
-    # 3. Betting Recommendation (Simplified)
-    is_value = False
-    bet_target = ""
-    edge = 0.0
+        raise HTTPException(status_code=500, detail=f"Prediction failed: {e}")
     
-    if p_f1 > 0.5:
-        implied = 1 / fight.f1_odds
-        if p_f1 > implied * 1.05: # 5% margin
-            is_value = True
-            bet_target = f1
-            edge = p_f1 - implied
-    else:
-        implied = 1 / fight.f2_odds
-        if p_f2 > implied * 1.05:
-            is_value = True
-            bet_target = f2
-            edge = p_f2 - implied
-
+    p_f2 = 1.0 - p_f1
     winner = f1 if p_f1 > 0.5 else f2
     confidence = max(p_f1, p_f2)
     
-    return {
-        "winner": winner,
-        "confidence": confidence,
-        "f1_prob": p_f1,
-        "f2_prob": p_f2,
-        "is_value": is_value,
-        "bet_target": bet_target,
-        "edge": edge,
-        "conformal_set": c_set
-    }
+    # Conformal Set (Approximate)
+    c_set = []
+    if p_f1 > 0.2: c_set.append(f1)
+    if p_f2 > 0.2: c_set.append(f2)
+    
+    # --- Master Props Logic ---
+    pred_method = "N/A"
+    pred_round = "N/A"
+    trifecta_prob = 0.0
+    min_odds = "N/A"
+    
+    if prop_model_win:
+        try:
+            # We need features for props.
+            # Master 3 uses different features than Props?
+            # Props uses 'feature_utils.prepare_production_data'.
+            # It expects a DataFrame with raw stats.
+            # We can't easily get that from m3_predictor.
+            # BUT, we can use 'feature_utils' to load the data and find the fighters?
+            # Or just use the 'm3_predictor.history' to reconstruct?
+            # Actually, 'prepare_production_data' loads its own data if passed a DF.
+            # Let's try to use the SAME logic as predict_next_card.py:
+            # It loads 'training_data_enhanced.csv' (from master_3/data) to get stats.
+            
+            # We can use the 'm3_predictor.latest_stats' to build a row for 'prepare_production_data'?
+            # No, 'prepare_production_data' is robust.
+            # Let's just create a minimal DF with names and odds, and let 'prepare_production_data' handle the lookup if it supports it.
+            # Wait, 'prepare_production_data' takes a DF and calculates features.
+            # It assumes the DF has the raw columns.
+            
+            # Hack: We will skip Props for now if we can't easily generate features, 
+            # OR we rely on the fact that 'predict_next_card.py' works because it has the full CSV.
+            # Here we only have names.
+            
+            # Solution: We need a 'PropFeatureGenerator' that looks up the fighters in the DB.
+            # We can reuse 'm3_predictor's history!
+            # The 'm3_predictor' has 'latest_stats'.
+            # But Props model expects specific columns like 'slpm_15_f_1'.
+            # 'latest_stats' has them! (I added them to keys_to_store in api_utils.py).
+            
+            # Let's reconstruct a row for Props.
+            s1 = m3_predictor.latest_stats.get(f1, {})
+            s2 = m3_predictor.latest_stats.get(f2, {})
+            
+            row = {}
+            # We need to map 'slpm_15' -> 'slpm_15_f_1' etc.
+            # The keys in latest_stats are generic 'slpm_15'.
+            
+            props_cols = [
+                'slpm_15', 'sapm_15', 'td_avg_15', 'sub_avg_15',
+                'f_1_chin_score', 'f_2_chin_score' # These are stored as 'chin_score'
+            ]
+            
+            # Map generic to f1/f2
+            for k in ['slpm_15', 'sapm_15', 'td_avg_15', 'sub_avg_15']:
+                row[f'{k}_f_1'] = s1.get(k, 0)
+                row[f'{k}_f_2'] = s2.get(k, 0)
+                
+            row['f_1_chin_score'] = s1.get('chin_score', 5)
+            row['f_2_chin_score'] = s2.get('chin_score', 5)
+            
+            # Add odds
+            row['f_1_odds'] = fight.f1_odds
+            row['f_2_odds'] = fight.f2_odds
+            
+            # Add names
+            row['f_1_name'] = f1
+            row['f_2_name'] = f2
+            
+            # Create DF
+            X_props_raw = pd.DataFrame([row])
+            
+            # Now call prepare_production_data
+            # It calculates _adj and diffs.
+            X_props, _ = prepare_production_data(X_props_raw)
+            
+            # Predict Props
+            pp_win = prop_model_win.predict_proba(X_props)[:, 1][0]
+            pp_finish = prop_model_finish.predict_proba(X_props)[:, 1][0]
+            pp_method = prop_model_method.predict_proba(X_props)[0]
+            pp_round = prop_model_round.predict_proba(X_props)[0]
+            
+            # ... (Same logic as before) ...
+            if pp_win > 0.5:
+                conf_w = pp_win
+            else:
+                conf_w = 1 - pp_win
+                
+            prob_ko = pp_finish * pp_method[0]
+            prob_sub = pp_finish * pp_method[1]
+            prob_dec = 1 - pp_finish
+            
+            methods = {'KO/TKO': prob_ko, 'Submission': prob_sub, 'Decision': prob_dec}
+            best_method = max(methods, key=methods.get)
+            conf_m = methods[best_method]
+            
+            import numpy as np
+            best_rnd_idx = np.argmax(pp_round)
+            best_rnd = best_rnd_idx + 1
+            conf_r = pp_round[best_rnd_idx]
+            
+            pred_method = best_method
+            
+            if best_method == 'Decision':
+                trifecta_prob = conf_w * prob_dec
+                pred_round = "-"
+            else:
+                trifecta_prob = conf_w * conf_m * conf_r
+                pred_round = str(best_rnd)
+                
+            # Min Odds
+            if trifecta_prob > 0:
+                min_odds_dec = 1 / trifecta_prob
+                if min_odds_dec >= 2.0:
+                    min_odds = f"+{int((min_odds_dec - 1) * 100)}"
+                else:
+                    min_odds = f"-{int(100 / (min_odds_dec - 1))}"
+                    
+        except Exception as e:
+            print(f"Props Error: {e}")
+            # Don't fail the whole request
+            pass
 
+    # Betting Logic
+    is_value = False
+    bet_target = ""
+    edge = 0.0
+    if p_f1 > 0.5:
+        implied = 1 / fight.f1_odds
+        if p_f1 > implied * 1.05:
+            is_value = True
+            bet_target = f1
+            edge = p_f1 - implied
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8003)

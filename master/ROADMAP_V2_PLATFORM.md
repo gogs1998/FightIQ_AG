@@ -3,6 +3,14 @@
 
 ---
 
+## 🏗️ Phase 0: The Foundation (Data Ingestion)
+**Goal:** Automate the data pipeline so the platform runs 24/7 without manual intervention.
+*   **Automated Scrapers:** Daily jobs to fetch new fight announcements and results.
+*   **Odds Stream:** Real-time connection to Odds API for live line movement.
+*   **Data Warehouse:** Moving from CSVs to a proper SQL Database (PostgreSQL) for multi-user access.
+
+---
+
 ## 🚀 Phase 1: The "Octagon Terminal" (Visualization Layer)
 **Goal:** A "Bloomberg Terminal" for Fight Fans. Shiny, customizable, and data-dense.
 
@@ -13,36 +21,28 @@
     *   **Tale of the Tape 2.0:** Holographic comparison of Reach, Age, Stance.
     *   **Chin Health Monitor:** Visual bar chart of accumulated damage.
     *   **Steam Tracker:** Live odds movement graph.
-    *   **"The Gap":** Visualizing the difference between Implied Probability and True Probability.
-
-### 1.2 "DYOR" Mode (Do Your Own Research)
-*   **Interactive Graphs:** Users can plot "Win Rate vs Age Gap" or "Finish Rate vs Weight Class" dynamically.
-*   **Fighter Deep Dive:** Click a fighter to see their entire "Career Equity Curve" (Betting profitability over time).
 
 ---
 
-## 🧪 Phase 2: The "Strategy Lab" (No-Code ML Pipeline)
-**Goal:** Let users play Data Scientist. They build the model; we provide the infrastructure.
+## 🧪 Phase 2: The "Strategy Lab" (User-Driven Discovery)
+**Goal:** Gamify the research process. Let users feel like Quants discovering the "Holy Grail".
 
-### 2.1 Feature Selector
-*   Users choose their "Alpha Factors" from our verified, leak-free library:
-    *   [x] Age Difference
-    *   [ ] Reach Advantage
-    *   [x] Dynamic Elo
-    *   [ ] Gym Quality (New)
-    *   [ ] Twitter Sentiment (New)
+### 2.1 The "Lego Block" System
+*   **Concept:** We don't give them the answer. We give them the blocks.
+*   **Feature Library:** Users select *which* variables they believe in:
+    *   "I think `Reach` matters most." -> Selects `diff_reach`.
+    *   "I think `Age` is key." -> Selects `diff_age`.
+*   **The Hook:** They build a strategy, backtest it, and see *their* ROI.
+*   **Tiered Access:**
+    *   **Free:** Basic stats (Wins, Losses).
+    *   **Pro:** Advanced stats (Striking Differential, Elo).
+    *   **Whale:** "God Mode" features (Boruta Selected, Genetic Optimization).
 
-### 2.2 Model Architect
-*   Users select the engine:
-    *   **"The Hammer"** (Logistic Regression - Simple, Interpretable).
-    *   **"The Scalpel"** (XGBoost - High Precision).
-    *   **"The Brain"** (Neural Network - Experimental).
-
-### 2.3 Risk Settings
-*   Users define their staking strategy:
-    *   Flat Bet ($100/fight).
-    *   Kelly Criterion (Aggressive).
-    *   "Value Sniper" (Only bet if Edge > X%).
+### 2.2 The Backtest Loop
+*   User clicks "Simulate".
+*   System runs their custom strategy on 2010-2025 data.
+*   **Result:** "Your Strategy ROI: +12%". (Vs FightIQ Benchmark: +30%).
+*   **Psychology:** This proves FightIQ's value while keeping them engaged trying to beat us.
 
 ---
 
@@ -65,11 +65,3 @@
 *   **Backend:** FastAPI (Python) to run the ML pipelines.
 *   **Worker Queue:** Celery/Redis to handle the heavy backtesting jobs asynchronously.
 *   **Database:** PostgreSQL (User strategies) + ClickHouse (High-speed tick data for odds).
-
----
-
-## 📅 Execution Plan
-1.  **Design:** Wireframe the "Octagon Terminal" (Next.js).
-2.  **API:** Expose our `backtest_strategies.py` logic via API endpoints.
-3.  **Data:** Ensure all 51 Boruta features are available as selectable inputs.
-4.  **Launch:** Release "FightIQ Labs" (Beta) to a small group of high-value users.

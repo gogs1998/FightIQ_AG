@@ -1,0 +1,14 @@
+{
+    "best_params": {
+        "xgb_max_depth": 3,
+        "xgb_learning_rate": 0.03886886299279724,
+        "xgb_n_estimators": 286,
+        "xgb_min_child_weight": 3,
+        "xgb_subsample": 0.7736633276629962,
+        "xgb_colsample_bytree": 0.5369659461483637,
+        "siamese_hidden_dim": 64,
+        "siamese_epochs": 15,
+        "siamese_lr": 0.001,
+        "ensemble_xgb_weight": 0.15456484321586822
+    }
+}
