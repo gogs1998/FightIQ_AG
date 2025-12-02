@@ -1,0 +1,23 @@
+{
+    "model_params": {
+        "xgb_max_depth": 9,
+        "xgb_learning_rate": 0.03512693731049242,
+        "xgb_n_estimators": 185,
+        "xgb_min_child_weight": 5,
+        "xgb_subsample": 0.5695180204504422,
+        "xgb_colsample_bytree": 0.6385073644733321,
+        "siamese_n_features": 75,
+        "siamese_lr": 0.0010301084366340226,
+        "siamese_hidden_dim": 128,
+        "siamese_epochs": 15,
+        "ensemble_xgb_weight": 0.18802254268472818,
+        "n_seeds": 50
+    },
+    "strategy_params": {
+        "min_edge": 0.021406488020206928,
+        "kelly_fraction": 0.7671437007376765,
+        "min_confidence": 0.5187451348839646,
+        "max_odds": 5.011202753204029
+    },
+    "description": "Unified configuration for Master 3 pipeline. Merged from params_optimized.json and strategy_params.json."
+}

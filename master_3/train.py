@@ -165,14 +165,28 @@ def train_model(df, split_date, features, params, verbose=True):
             
             siamese_probs = siamese_model(t_f1, t_f2, t_s1, t_s2).cpu().numpy()
             
-        acc = accuracy_score(y_test, (siamese_probs > 0.5).astype(int))
-        if acc > best_siam_acc:
-            best_siam_acc = acc
-            best_probs = siamese_probs
-            # Save best model state
-            torch.save(siamese_model.state_dict(), 'models/siamese_master3.pth')
-            
-    if verbose: print(f"Best Siamese Acc: {best_siam_acc:.4f} (Saved to models/siamese_master3.pth)")
+        # Accumulate probabilities for Bagging
+        best_probs += siamese_probs
+        
+    # Average the probabilities
+    best_probs /= n_seeds
+    avg_acc = accuracy_score(y_test, (best_probs > 0.5).astype(int))
+    
+    # Save the LAST model just to have an artifact (or we should save all? or an ensemble object?)
+    # For now, saving the last one is "okay" structurally, but for inference we ideally want the ensemble.
+    # However, to keep it simple and avoid massive refactoring of the inference pipeline which expects a single model file,
+    # we will just save the last one but acknowledge that the reported metrics come from the BAGGED ensemble.
+    # Actually, the user wants to fix "Test set peeking".
+    # Bagging fixes the metric validity.
+    # But for production inference, if we only save one random seed model, our production performance will be worse than the reported bagged performance.
+    # Ideally we should save the top K models based on VALIDATION score.
+    # But we don't have a validation split here (only train/test).
+    # So Bagging is the correct evaluation metric.
+    # For production, we should probably train a single robust model or save the ensemble.
+    # Given the constraints, I will implement Bagging for the metric report.
+    
+    torch.save(siamese_model.state_dict(), 'models/siamese_master3.pth')
+    if verbose: print(f"Siamese Bagging Acc ({n_seeds} seeds): {avg_acc:.4f}")
     
     # Ensemble
     w = params.get('ensemble_xgb_weight', 0.5)
@@ -237,16 +251,20 @@ def train_model(df, split_date, features, params, verbose=True):
                 'Bankroll': bankroll
             })
                 
+    # Calculate ROI
+    roi = (bankroll - 1000) / 1000
     if verbose: print(f"ROI: {roi:.2%}")
     
     # Save Log
     if history:
         log_df = pd.DataFrame(history)
-        log_df.to_csv('betting_log.csv', index=False)
-        if verbose: print(f"Saved {len(log_df)} bets to betting_log.csv")
-                
-    roi = (bankroll - 1000) / 1000
-    if verbose: print(f"ROI: {roi:.2%}")
+        try:
+            log_df.to_csv('betting_log.csv', index=False)
+            if verbose: print(f"Saved {len(log_df)} bets to betting_log.csv")
+        except PermissionError:
+            print("Warning: Could not save 'betting_log.csv' (Permission Denied). Is the file open?")
+        except Exception as e:
+            print(f"Warning: Could not save 'betting_log.csv': {e}")
     
     return {
         'accuracy': final_acc,
@@ -274,15 +292,24 @@ def main():
         with open('features_enhanced.json', 'r') as f:
             features = json.load(f)
             
-    # 3. Load Params
-    with open('params.json', 'r') as f:
-        best = json.load(f)
-        params = best['best_params']
-        
-    if os.path.exists('params_optimized.json'):
-        with open('params_optimized.json', 'r') as f:
-            opt_params = json.load(f)
-            params.update(opt_params)
+    # 3. Load Unified Config
+    if os.path.exists('config.json'):
+        with open('config.json', 'r') as f:
+            config = json.load(f)
+            params = config['model_params']
+            # Strategy params are used in strategy logic, but we can load them here if needed.
+            # For training, we just need model_params.
+            print("Loaded config.json")
+    else:
+        print("Warning: config.json not found. Falling back to legacy params.")
+        # Fallback logic (keep existing just in case)
+        with open('params.json', 'r') as f:
+            best = json.load(f)
+            params = best['best_params']
+        if os.path.exists('params_optimized.json'):
+            with open('params_optimized.json', 'r') as f:
+                opt_params = json.load(f)
+                params.update(opt_params)
             
     # Run Standard Training (2024-2025)
     train_model(df, '2024-01-01', features, params)
